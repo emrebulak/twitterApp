@@ -1,7 +1,11 @@
-import logo from '../assets/logo.png';
-import googleLogo from '../assets/google.png';
-import { signInWithRedirect } from 'firebase/auth';
-import { auth, provider } from '../firebase/config';
+import { useFormik } from "formik";
+import GoogleCard from "./GoogleCard"
+import { LoginSchema } from "../constants/schema";
+import Input from "./Input";
+import { auth } from "../firebase/config";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { toast } from "react-toastify";
+
 
 const LoginCard = ({ setIsSignUp }) => {
 
@@ -9,44 +13,47 @@ const LoginCard = ({ setIsSignUp }) => {
         setIsSignUp(true)
     }
 
-    const loginGoogle = async() => {
-        // Google ile giriş yapma işlemi
-       await signInWithRedirect(auth, provider)
-            .then((result) => {
-                console.log('Result : ', result)
+    const formik = useFormik({
+        initialValues: {
+            email: '',
+            password: '',
+        },
+        validationSchema: LoginSchema,
+        onSubmit: values => {
+            loginWithEmailAndPassword(values);
+        },
+    });
+
+
+    const loginWithEmailAndPassword = async (values) => {
+       await signInWithEmailAndPassword(auth, values.email, values.password)
+            .then((res) => {
+                console.log("Giriş Başarılı : ", res)
+                toast.success("Giriş işlemi başarılı")
             })
-            .catch((error) => {
-                console.log(error)
+            .catch((err) => {
+                toast.error(err.message)
             })
     }
 
+
     return (
         <div className='flex flex-col justify-center items-center gap-10 bg-black px-32 py-16 rounded-lg'>
-            <img width={60} src={logo} alt="Logo" />
-            <h1 className='font-bold text-lg'>Twitter'a giriş yap</h1>
-            <button onClick={loginGoogle} className='flex gap-4 items-center justify-center bg-white text-black px-10 py-2 rounded-full transition hover:bg-slate-300'>
-                <img width={20} src={googleLogo} alt="Google Logo" />
-                <span>Google ile Giriş Yap</span>
-            </button>
+            <GoogleCard />
 
-            <div className='flex flex-col justify-center items-center gap-8 w-full'>
-                <div className='flex flex-col gap-1 w-full'>
-                    <label htmlFor="emailInp">Email</label>
-                    <input autoComplete="off" name='email' className='p-2 rounded border-none outline-none text-black transition focus:shadow-white focus:shadow-md' type="text" />
-                </div>
-                <div className='flex flex-col gap-1 w-full'>
-                    <label htmlFor="emailInp">Şifre</label>
-                    <input autoComplete="off" name='password' className='p-2 rounded border-none outline-none text-black transition focus:shadow-white focus:shadow-md' type="password" />
-                </div>
+            <form onSubmit={formik.handleSubmit} className='flex flex-col justify-center items-center gap-5 w-full'>
 
-                <button className='bg-white text-black py-1 w-full rounded-full font-bold transition hover:bg-slate-300'>Giriş Yap</button>
+                <Input formik={formik} title='E-mail' name='email' type='text' />
+                <Input formik={formik} title='Şifre' name='password' type='password' />
+
+                <button disabled={!formik.isValid || !formik.dirty} type="submit" className='bg-white text-black py-1 w-full rounded-full font-bold transition hover:bg-slate-300 disabled:bg-slate-500'>Giriş Yap</button>
 
                 <p className='flex gap-2 self-start'>
                     <span className='text-gray-500'>Hesabınız Yoksa</span>
                     <span onClick={handleChange} className='cursor-pointer text-blue-500 select-none'>Kayıt olun</span>
                 </p>
 
-            </div>
+            </form>
         </div>
     )
 }
