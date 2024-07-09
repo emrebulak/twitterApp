@@ -3,6 +3,12 @@
 @tailwind utilities;
 
 body {
-    background-color: #242424;
+    background-color: black;
     color: white;
+}
+
+.main{
+    display: grid;
+    grid-template-columns: 1fr minmax(400px, 600px) 1fr;
+    height: 100vh;
 }

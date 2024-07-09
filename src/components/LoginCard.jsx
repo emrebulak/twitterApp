@@ -5,9 +5,12 @@ import Input from "./Input";
 import { auth } from "../firebase/config";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 
 const LoginCard = ({ setIsSignUp }) => {
+
+    const navigate = useNavigate()
 
     const handleChange = () => {
         setIsSignUp(true)
@@ -30,6 +33,8 @@ const LoginCard = ({ setIsSignUp }) => {
             .then((res) => {
                 console.log("Giriş Başarılı : ", res)
                 toast.success("Giriş işlemi başarılı")
+                navigate('/main')
+
             })
             .catch((err) => {
                 toast.error(err.message)

@@ -3,7 +3,7 @@ import { Navigate, Outlet } from 'react-router-dom'
 import { onAuthStateChanged } from 'firebase/auth'
 import { auth } from '../firebase/config'
 
-const MainGuard = () => {
+const LoginGuard = () => {
 
     const [user, setUser] = useState()
 
@@ -13,8 +13,8 @@ const MainGuard = () => {
         });
     }, [])
 
-    if (user === false) {
-        return <Navigate to={'/'} />
+    if (user === true) {
+        return <Navigate to={'/main'} />
     }
 
     return (
@@ -22,4 +22,4 @@ const MainGuard = () => {
     )
 }
 
-export default MainGuard
+export default LoginGuard
