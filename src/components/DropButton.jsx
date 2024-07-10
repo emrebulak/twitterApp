@@ -3,7 +3,7 @@ import { FaRegTrashAlt } from "react-icons/fa";
 import { deleteDoc, doc } from "firebase/firestore";
 import { db } from "../firebase/config";
 import { toast } from "react-toastify";
-const DropButton = ({ tweet }) => {
+const DropButton = ({ tweet, edit }) => {
     const tweetsCol = doc(db, 'tweets', tweet.id);
 
     const handleDelete = async () => {
@@ -27,7 +27,7 @@ const DropButton = ({ tweet }) => {
             <nav className="popup-window">
                 <ul>
                     <li>
-                        <span><MdModeEditOutline className="text-lg" /> <span>Düzenle</span></span>
+                        <span onClick={edit}><MdModeEditOutline className="text-lg" /> <span>Düzenle</span></span>
                         <span onClick={handleDelete} ><FaRegTrashAlt className="text-md" /> <span>Sil</span></span>
                     </li>
 

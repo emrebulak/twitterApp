@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { db } from "../firebase/config";
 import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
 
-const Feed = () => {
+const Feed = ({setCount}) => {
 
   const [tweets, setTweets] = useState();
 
@@ -16,6 +16,7 @@ const Feed = () => {
       const temp = [];
       snapshot.docs.forEach((doc) => temp.push({ id: doc.id, ...doc.data() }));
 
+      setCount(temp.length);
       setTweets(temp);
     });
     return () => unsub();
