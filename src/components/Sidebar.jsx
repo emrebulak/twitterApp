@@ -24,8 +24,6 @@ const Sidebar = () => {
         });
     }
 
-    console.log("User : ", user)
-
     return (
         <nav className="border-r border-gray-500 p-4 flex flex-col items-end justify-between">
             <div className='cursor-pointer'>

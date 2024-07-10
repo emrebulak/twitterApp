@@ -31,7 +31,6 @@ const LoginCard = ({ setIsSignUp }) => {
     const loginWithEmailAndPassword = async (values) => {
        await signInWithEmailAndPassword(auth, values.email, values.password)
             .then((res) => {
-                console.log("Giriş Başarılı : ", res)
                 toast.success("Giriş işlemi başarılı")
                 navigate('/main')
 
@@ -43,7 +42,7 @@ const LoginCard = ({ setIsSignUp }) => {
 
 
     return (
-        <div className='flex flex-col justify-center items-center gap-10 bg-black px-32 py-16 rounded-lg'>
+        <div className='flex flex-col justify-center items-center gap-10 bg-zinc-800 px-32 py-16 rounded-lg'>
             <GoogleCard />
 
             <form onSubmit={formik.handleSubmit} className='flex flex-col justify-center items-center gap-5 w-full'>
